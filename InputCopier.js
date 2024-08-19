@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Copy Input CodePTIT
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  CopyInput
 // @author       Your Name
 // @match        *://code.ptit.edu.vn/*
@@ -10,20 +10,18 @@
 
 (function() {
     function removeBlankLines(input) {
-        return input
-            .split('\n')
-            .map(line => line.trim())
-            .filter(line => line !== '')
-            .join('\n')
-        ;
-    }
+    return input
+        .replace(/[\u00A0\u0020]/g, ' ')
+        .replace(/\t/g, '')
+        .split('\n')
+        .filter(line => line !== '')
+        .join('\n');
+}
 
     const cells = document.querySelectorAll('div.submit__des > table > tbody > tr:nth-child(2) > td:nth-child(1)');
     cells.forEach(cell => {
-        // Tạo button mới
         const button = document.createElement('button');
 
-        // Adding an SVG icon for the copy button
         button.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-clipboard" viewBox="0 0 16 16">
                 <path d="M10 1.5H6v-1a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v1z"/>
